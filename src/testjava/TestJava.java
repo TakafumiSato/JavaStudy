@@ -22,5 +22,10 @@ public class TestJava {
         dataList.removeData(d);
         dataList.removeData(1);
         dataList.outputList();
+        
+        String s = Integer.toString(dataList.getData(0).getAge());
+        int i = Integer.parseInt(s);
+        Integer integer = Integer.valueOf(s);
+        System.out.println(integer);
     }
 }
