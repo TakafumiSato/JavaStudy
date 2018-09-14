@@ -5,17 +5,22 @@
  */
 package testjava;
 
-/**
- *
- * @author 佐藤孝史
- */
-public class TestJava {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
-    }
+public class TestJava {
     
+    public static void main(String[] args) {
+        
+        DataList dataList = new DataList();
+        dataList.addData(1, "さとう", 31);
+        dataList.addData(new Data(2,"たかふみ",62));
+        dataList.insertData(1, new Data(3,"hoge",10));
+        dataList.outputList();
+        
+        Data d = dataList.getData(1);
+        System.out.println("\n取得したデータ\n" + d.getId() + d.getName() + d.getAge() + "\n");
+        
+        dataList.removeData(d);
+        dataList.removeData(1);
+        dataList.outputList();
+    }
 }
