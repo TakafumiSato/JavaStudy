@@ -46,7 +46,7 @@ public class DataList {
         while (i.hasNext()) {
             
             Data d = i.next();
-            if (data == d) {
+            if (data.equals(d)) {
                 i.remove();
             }
         }
