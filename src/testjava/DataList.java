@@ -46,6 +46,8 @@ public class DataList {
         while (i.hasNext()) {
             
             Data d = i.next();
+            // == だと参照型の場合、アドレスを比較する
+            // なので値を比較したい場合はequalsで比較する
             if (data.equals(d)) {
                 i.remove();
             }
