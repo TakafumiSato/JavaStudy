@@ -15,6 +15,8 @@ public class TestJava {
         integerTest();
         
         stringTest();
+        
+        equalsTest();
     }
     
     static void arrayListTest() {
@@ -109,5 +111,29 @@ public class TestJava {
         for (String s: str) {
             System.out.println(s);
         }
+    }
+    
+    static void equalsTest() {
+        
+        Data a = new Data(new Integer(123), "オーガスタ", 3);
+        Data b = new Data(new Integer(123), "オーガスタ", 3);
+        //String a = "あいう";
+        //String b = "あいう";
+        //b = a;
+        
+        if (a == b) {
+            System.out.println("同じ");
+        } else {
+            System.out.println("違う");
+        }
+        if (a.equals(b)) {
+            System.out.println("同じ");
+        } else {
+            System.out.println("違う");
+        }
+        
+        // equalsメソッドが実装されていないため意図した結果にならない
+        // また == は参照先を比較してしまうため同値であっても"違う"の結果となる
+        // なのでDataクラス内でequalsメソッドをオーバライドする必要がある
     }
 }

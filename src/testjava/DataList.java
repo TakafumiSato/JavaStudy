@@ -50,7 +50,11 @@ public class DataList {
             // == だと参照型の場合、アドレスを比較する
             // なので値を比較したい場合はequalsで比較する
             if (data.equals(d)) {
+            //if (data == d) {
                 i.remove();
+                System.out.println("aとbは同じ");
+            } else {
+                System.out.println("aとbは違う");
             }
         }
     }

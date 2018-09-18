@@ -39,4 +39,23 @@ public class Data {
     public void setAge(int age) {
         this.age = age;
     }
+    
+    public boolean equals(Object obj) {
+        
+        // オブジェクトがNULLでないこと
+        if (obj == null) {
+            return false;
+        }
+        // オブジェクトが同じ型であること
+        if (!(obj instanceof Data)) {
+            return false;
+        }
+        // 同値性を比較
+        if (this.id.equals(((Data)obj).id) &&
+            this.name.equals(((Data)obj).name)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
