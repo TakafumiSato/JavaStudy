@@ -47,7 +47,9 @@ public class DataList {
             
             Data d = i.next();
 
-            if (data == d) {
+            // == だと参照型の場合、アドレスを比較する
+            // なので値を比較したい場合はequalsで比較する
+            if (data.equals(d)) {
                 i.remove();
             }
         }
