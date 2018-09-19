@@ -189,7 +189,7 @@ public class TestJava {
             System.out.println("\n--- SortFileTest ---\n");
             
             // 年齢順でソート
-            dataList.sortAge();
+            dataList.sortAge(DataList.SORT_MODE_SELECT);
             
             dataList.outputList();
 

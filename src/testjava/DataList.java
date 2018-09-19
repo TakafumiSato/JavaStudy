@@ -11,10 +11,14 @@ import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 
 public class DataList {
+    
     private ArrayList<Data> list;
+    public static final int SORT_MODE_SELECT = 1;
+    public static final int SORT_MODE_BUCKET = 2;
     
     public DataList() {
         list = new ArrayList<Data>();
@@ -126,7 +130,24 @@ public class DataList {
         return index;
     }
     
-    public void sortAge() {
+    public void sortAge(int sortMode) {
+        
+        switch (sortMode) {
+            case SORT_MODE_SELECT:
+                selectSortAge();
+                break;
+            case SORT_MODE_BUCKET:
+                bucketSortAge();
+                break;
+            default:
+                System.out.println("そんなモードはありません");
+                break;
+        }
+    }
+    
+    private void selectSortAge() {
+        
+        System.out.println("*選択ソート*");
         
         int[] array = new int[list.size()];
         
@@ -145,6 +166,32 @@ public class DataList {
                 Data tmp = list.get(index);
                 list.set(index, list.get(i));
                 list.set(i,tmp);
+            }
+        }
+    }
+    
+    private void bucketSortAge() {
+        
+        System.out.println("*バケットソート*");
+        
+        List<List> bucket = new ArrayList<List>();
+        for (int i = 0; i < 150; i++) {
+            bucket.add(new ArrayList<Data>());
+        }
+        
+        for (int i = 0; i < list.size(); i++) {
+            bucket.get(list.get(i).getAge()).add(list.get(i));
+        }
+        
+        int j = 0;
+        for (int i = 0; i < bucket.size(); i++) {
+            if (bucket.get(i) != null) {
+                while (bucket.get(i).size() > 0) {
+                    Data tmp = (Data)bucket.get(i).get(0);
+                    bucket.get(i).remove(0);
+                    list.set(j, tmp);
+                    j++;
+                }
             }
         }
     }
