@@ -5,6 +5,10 @@
  */
 package testjava;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -15,9 +19,41 @@ public class DataList {
     public DataList() {
         list = new ArrayList<Data>();
     }
+    
+    public DataList(String fileName) {
+        list = new ArrayList<Data>();
+        
+        int size;
+        char[] cbuf = new char[2];
+        
+        try {
+            FileInputStream fs = new FileInputStream(fileName);
+            InputStreamReader isr = new InputStreamReader(fs,"UTF-8");
+            StringWriter sWriter = new StringWriter();
+            
+            //InputStreamReaderクラスのreadメソッドでファイルを1文字ずつ読み込む
+            while((size = isr.read(cbuf)) != -1) {
+                //System.out.println((char)data);
+                sWriter.write(cbuf, 0, size);
+            }
+            
+            System.out.println(sWriter.toString());
+            String s = sWriter.toString();
+            String[] list = s.split("[,\n]", 0);
+            
+            for (int i = 4; i < list.length; i+=4) {
+                addData(Integer.parseInt(list[i]), list[i+1], list[i+2], Integer.parseInt(list[i+3]));
+            }
+            outputList();
+            
+            isr.close();
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-    public void addData(int id, String name, int age) {
-        list.add(new Data(id, name, age));
+    public void addData(int id, String name, String gender, int birth) {
+        list.add(new Data(id, name, gender, birth));
     }
     
     public void addData(Data data) {
@@ -32,8 +68,8 @@ public class DataList {
         return list.get(index);
     }
     
-    public void insertData(int num, int id, String name, int age) {
-        list.add(num, new Data(id, name, age));
+    public void insertData(int num, int id, String name, String gender, int age) {
+        list.add(num, new Data(id, name, gender, age));
     }
     
     public void insertData(int num, Data data) {
@@ -75,11 +111,51 @@ public class DataList {
         }
     }
     
+    public int searchID(int id) {
+        
+        int index = 99999;
+        
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getId().equals(id)) {
+                System.out.println("発見");
+                index = i;
+                break;
+            }
+        }
+        
+        return index;
+    }
+    
+    public void sortAge() {
+        
+        int[] array = new int[list.size()];
+        
+        for (int i = 0; i < list.size(); i++) {
+            array[i] = list.get(i).getAge();
+        }
+
+        for(int i = 0; i < list.size(); i++ ){
+            int index = i;
+            for(int j = i + 1; j < list.size(); j++){
+                if(list.get(j).getAge() < list.get(index).getAge()){
+                    index = j;
+                }
+            }
+            if(i != index){
+                Data tmp = list.get(index);
+                list.set(index, list.get(i));
+                list.set(i,tmp);
+            }
+        }
+    }
+    
     public void outputList() {
         for (Data data: list) {
             System.out.println("ID: " + data.getId()
                             + "\n名前: " + data.getName()
-                            + "\n年齢: " + data.getAge());
+                            + "\n性別: " + data.getGender()
+                            + "\n年齢: " + data.getAge()
+                            + "\nマイナンバー: " + data.getMyNumber());
         }
         System.out.println("データ数: " + list.size());
     }

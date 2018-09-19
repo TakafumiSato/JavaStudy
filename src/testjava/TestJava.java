@@ -5,6 +5,8 @@
  */
 package testjava;
 
+import java.io.*;
+
 
 public class TestJava {
     
@@ -17,6 +19,8 @@ public class TestJava {
         stringTest();
         
         equalsTest();
+        
+        loadTextFile();
     }
     
     static void arrayListTest() {
@@ -24,7 +28,7 @@ public class TestJava {
         System.out.println("\n--- ArrayListTest ---\n");
         
         DataList dataList = new DataList();
-        dataList.addData(1, "さとう", 31);
+        dataList.addData(1, "さとう", "男", 31);
         dataList.addData(new Data(2,"たかふみ",62));
         dataList.insertData(1, new Data(3,"hoge",10));
         dataList.outputList();
@@ -115,6 +119,8 @@ public class TestJava {
     
     static void equalsTest() {
         
+        System.out.println("\n--- EqualsTest ---\n");
+        
         Data a = new Data(new Integer(123), "オーガスタ", 3);
         Data b = new Data(new Integer(123), "オーガスタ", 3);
         //String a = "あいう";
@@ -135,5 +141,61 @@ public class TestJava {
         // equalsメソッドが実装されていないため意図した結果にならない
         // また == は参照先を比較してしまうため同値であっても"違う"の結果となる
         // なのでDataクラス内でequalsメソッドをオーバライドする必要がある
+    }
+    
+    static void loadTextFile() {
+        
+        System.out.println("\n--- LoadFileTest ---\n");
+        
+        // インスタンス生成時、データファイル読込登録
+        DataList dataList = new DataList("C:/Users/佐藤孝史/Documents/NetBeansProjects/TestJava/src/testjava/TextFile/従業員マスタ.txt");
+        
+        // ファイルのマージ
+        mergeFile(dataList);
+    }
+    
+    static void mergeFile(DataList dataList) {
+        
+        int size;
+        char[] cbuf = new char[2];
+        
+        try {
+            // マージするファイルを読込
+            FileInputStream fs = new FileInputStream("C:/Users/佐藤孝史/Documents/NetBeansProjects/TestJava/src/testjava/TextFile/個人番号マスタ.txt");
+            InputStreamReader isr = new InputStreamReader(fs,"UTF-8");
+            StringWriter sWriter = new StringWriter();
+            
+            //InputStreamReaderクラスのreadメソッドでファイルを1文字ずつ読み込む
+            while((size = isr.read(cbuf)) != -1) {
+                sWriter.write(cbuf, 0, size);
+            }
+            
+            System.out.println(sWriter.toString());
+            String s = sWriter.toString();
+            // テキストファイル内にある特殊文字を","に変換
+            s = s.replace("\r\n", ",");
+            s = s.replace("\r", ",");
+            s = s.replace("\n", ",");
+            // ","で切り分け
+            String[] list = s.split("[,\n\r]", 0);
+            
+            // マージ
+            for (int i = 2; i < list.length; i+=2) {
+                dataList.getData(dataList.searchID(Integer.parseInt(list[i]))).setMyNumber(Long.parseLong(list[i+1]));
+            }
+            
+            dataList.outputList();
+            
+            System.out.println("\n--- SortFileTest ---\n");
+            
+            // 年齢順でソート
+            dataList.sortAge();
+            
+            dataList.outputList();
+
+            isr.close();
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
     }
 }
